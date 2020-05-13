@@ -75,6 +75,7 @@ public class AdminLoginActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
                         startActivity(intent);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
