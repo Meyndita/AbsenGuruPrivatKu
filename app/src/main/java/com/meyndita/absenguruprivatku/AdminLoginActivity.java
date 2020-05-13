@@ -46,6 +46,7 @@ public class AdminLoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.btn_login_admin);
         loginForm = findViewById(R.id.admin_login);
 
+        loginButton = findViewById(R.id.btn_login_admin);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
