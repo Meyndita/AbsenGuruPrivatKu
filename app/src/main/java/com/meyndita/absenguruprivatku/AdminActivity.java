@@ -49,18 +49,20 @@ public class AdminActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<ItemGuru>>() {
             @Override
             public void onResponse(Call<List<ItemGuru>> call, Response<List<ItemGuru>> response) {
-                List<ItemGuru> guruItems = response.body();
+                if (response.isSuccessful()) {
+                    List<ItemGuru> guruItems = response.body();
 
-                for (ItemGuru item : guruItems) {
-                    guru.add(new ItemGuru(item.getId_guru(), item.getNama(), item.getAlamat(), item.getJenis_kelamin(),
-                            item.getNo_telp(), item.getFoto(), item.getUsername(), item.getPassword()));
+                    for (ItemGuru item : guruItems) {
+                        guru.add(new ItemGuru(item.getId_guru(), item.getNama(), item.getAlamat(), item.getJenis_kelamin(),
+                                item.getNo_telp(), item.getFoto(), item.getUsername(), item.getPassword()));
+                    }
+
+                    itemAdapter.add(guru);
+                    guruView.setAdapter(fastAdapter);
+
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                    guruView.setLayoutManager(layoutManager);
                 }
-
-                itemAdapter.add(guru);
-                guruView.setAdapter(fastAdapter);
-
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                guruView.setLayoutManager(layoutManager);
             }
 
             @Override

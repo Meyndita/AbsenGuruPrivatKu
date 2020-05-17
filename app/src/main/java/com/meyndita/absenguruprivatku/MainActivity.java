@@ -1,6 +1,7 @@
 package com.meyndita.absenguruprivatku;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.meyndita.absenguruprivatku.api.ApiClient;
 import com.meyndita.absenguruprivatku.api.ApiInterface;
 import com.meyndita.absenguruprivatku.helper.Session;
@@ -72,6 +76,16 @@ public class MainActivity extends AppCompatActivity {
                         String password = json.getJSONObject(0).getString("password");
                         String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
                         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                        FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
+                        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(MainActivity.this, new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if (location != null) {
+                                    session.setLocLatitude(location.getLatitude());
+                                    session.setLocLongitude(location.getLongitude());
+                                }
+                            }
+                        });
 
                         session.setLoggedInStatus(true);
                         session.setUsername(username);

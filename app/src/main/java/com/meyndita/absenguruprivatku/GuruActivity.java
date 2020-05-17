@@ -33,7 +33,7 @@ import retrofit2.Response;
 
 public class GuruActivity extends AppCompatActivity {
     private ImageView profil;
-    private TextView id_guru, nama, alamat, jenis_kelamin, no_telp, username, password;
+    private TextView id_guru, nama, alamat, jenis_kelamin, no_telp, username, password, lokasi_latitude, lokasi_longitude;
     private Session session;
 
     @Override
@@ -69,7 +69,7 @@ public class GuruActivity extends AppCompatActivity {
 
                     for (ItemAbsensi item : absenItems) {
                         absen.add(new ItemAbsensi(item.getUsername(), item.getPassword(), item.getJam_login(),
-                                item.getJam_logout(), item.getTanggal()));
+                                item.getJam_logout(), item.getTanggal(), item.getLokasi_latitude(), item.getLokasi_longitude()));
                     }
 
                     itemAdapter.add(absen);
@@ -104,10 +104,12 @@ public class GuruActivity extends AppCompatActivity {
                 String jam_login = session.getLoginTime();
                 String jam_logout = session.getLogoutTime();
                 String tanggal = session.getDate();
+                double lokasi_latitude = session.getLocLatitude();
+                double lokasi_longitude = session.getLocLongitude();
 
                 ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-                Call<ResponseBody> call = apiInterface.absenGuru(new ItemAbsensi(username, password, jam_login, jam_logout, tanggal));
+                Call<ResponseBody> call = apiInterface.absenGuru(new ItemAbsensi(username, password, jam_login, jam_logout, tanggal, lokasi_latitude, lokasi_longitude));
 
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
