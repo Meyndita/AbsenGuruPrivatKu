@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddFormActivity">
+    tools:context=".FormActivity">
 
     <ScrollView
         android:fillViewport="true"
@@ -19,13 +19,13 @@
             android:paddingBottom="20dp">
 
             <TextView
-                android:id="@+id/txt_title"
+                android:id="@+id/txt_tittle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:text="FORM DATA GURU"
+                android:text="Tambah Data Guru"
                 android:textAlignment="center"
                 android:textStyle="bold"
                 android:textSize="24sp"
@@ -33,6 +33,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/txt_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Id Guru: "
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:layout_marginTop="35dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_tittle"/>
+
+            <EditText
+                android:id="@+id/edt_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="65dp"
+                android:inputType="number"
+                app:layout_constraintStart_toEndOf="@id/txt_id"
+                app:layout_constraintTop_toTopOf="@id/txt_id"
+                app:layout_constraintBottom_toBottomOf="@id/txt_id"/>
 
             <TextView
                 android:id="@+id/txt_nama"
@@ -41,17 +61,15 @@
                 android:text="Nama: "
                 android:textColor="#000000"
                 android:textSize="16sp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="35dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_title"/>
+                app:layout_constraintTop_toBottomOf="@id/txt_id"/>
 
             <EditText
                 android:id="@+id/edt_nama"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="65dp"
-                android:hint="Masukkan nama Anda"
-                android:textSize="8pt"
                 app:layout_constraintStart_toEndOf="@id/txt_nama"
                 app:layout_constraintTop_toTopOf="@id/txt_nama"
                 app:layout_constraintBottom_toBottomOf="@id/txt_nama"/>
@@ -72,8 +90,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="65dp"
-                android:hint="Masukkan alamat Anda"
-                android:textSize="8pt"
                 app:layout_constraintStart_toEndOf="@id/txt_alamat"
                 app:layout_constraintTop_toTopOf="@id/txt_alamat"
                 app:layout_constraintBottom_toBottomOf="@id/txt_alamat"/>
@@ -131,8 +147,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="65dp"
                 android:inputType="number"
-                android:hint="Masukkan nomor telepon Anda"
-                android:textSize="8pt"
                 app:layout_constraintStart_toEndOf="@id/txt_telp"
                 app:layout_constraintTop_toTopOf="@id/txt_telp"
                 app:layout_constraintBottom_toBottomOf="@id/txt_telp"/>
@@ -152,7 +166,7 @@
                 android:id="@+id/img_foto"
                 android:layout_width="90dp"
                 android:layout_height="120dp"
-                android:src="@color/colorNew"
+                android:src="@color/colorPrimary"
                 android:layout_marginTop="10dp"
                 app:layout_constraintTop_toBottomOf="@id/txt_foto"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -161,7 +175,7 @@
                 android:id="@+id/btn_upload_foto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PILIH FOTO"
+                android:text="upload"
                 android:layout_marginStart="20dp"
                 app:layout_constraintStart_toEndOf="@id/img_foto"
                 app:layout_constraintTop_toTopOf="@id/img_foto"
@@ -183,8 +197,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="85dp"
-                android:hint="Masukkan username Anda"
-                android:textSize="8pt"
                 app:layout_constraintStart_toEndOf="@id/txt_username"
                 app:layout_constraintTop_toTopOf="@id/txt_username"
                 app:layout_constraintBottom_toBottomOf="@id/txt_username"/>
@@ -205,8 +217,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="85dp"
-                android:hint="Masukkan password Anda"
-                android:textSize="8pt"
                 app:layout_constraintStart_toEndOf="@id/txt_password"
                 app:layout_constraintTop_toTopOf="@id/txt_password"
                 app:layout_constraintBottom_toBottomOf="@id/txt_password"/>
@@ -215,8 +225,7 @@
                 android:id="@+id/btn_tambah_data_guru"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TAMBAHKAN DATA"
-                android:background="@color/colorNew"
+                android:text="tambah"
                 android:layout_marginTop="25dp"
                 app:layout_constraintTop_toBottomOf="@id/txt_password"
                 app:layout_constraintStart_toStartOf="parent"/>

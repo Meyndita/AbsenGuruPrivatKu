@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,15 +15,14 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.meyndita.absenguruprivatku.api.ApiClient;
-import com.meyndita.absenguruprivatku.api.ApiInterface;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+import id.ac.polinema.absensiguruprivate.rest.ApiClient;
+import id.ac.polinema.absensiguruprivate.rest.ApiInterface;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -33,9 +31,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddFormActivity extends AppCompatActivity {
+public class FormGuruActivity extends AppCompatActivity {
     private Button btnTambah, btnUpload;
-    private EditText inputNama, inputAlamat, inputTelp, inputUsername, inputPassword;
+    private EditText inputId, inputNama, inputAlamat, inputTelp, inputUsername, inputPassword;
     private RadioGroup radioGroup;
     private RadioButton selected;
     private ImageView fotoProfil;
@@ -44,11 +42,12 @@ public class AddFormActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_form);
+        setContentView(R.layout.activity_form_guru);
 
         btnTambah = findViewById(R.id.btn_tambah_data_guru);
         btnUpload = findViewById(R.id.btn_upload_foto);
         fotoProfil = findViewById(R.id.img_foto);
+        inputId = findViewById(R.id.edt_id);
         inputNama = findViewById(R.id.edt_nama);
         inputAlamat = findViewById(R.id.edt_alamat);
         radioGroup = findViewById(R.id.group_jk);
@@ -72,7 +71,7 @@ public class AddFormActivity extends AppCompatActivity {
     }
 
     private void selectImage() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, 1);
     }
 
@@ -107,6 +106,7 @@ public class AddFormActivity extends AppCompatActivity {
     }
 
     private void tambahData() {
+        String id_guru = inputId.getText().toString();
         String nama = inputNama.getText().toString();
         String alamat = inputAlamat.getText().toString();
         selected = findViewById(radioGroup.getCheckedRadioButtonId());
@@ -119,6 +119,7 @@ public class AddFormActivity extends AppCompatActivity {
         String password = inputPassword.getText().toString();
 
         HashMap<String, RequestBody> map = new HashMap<>();
+        map.put("id_guru", createPartFromString(id_guru));
         map.put("nama", createPartFromString(nama));
         map.put("alamat", createPartFromString(alamat));
         map.put("jenis_kelamin", createPartFromString(jenis_kelamin));
@@ -137,8 +138,8 @@ public class AddFormActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Berhasil!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                    Toast.makeText(getApplicationContext(), "Berhasil", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), FragmentDataGuru.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Gagal", Toast.LENGTH_SHORT).show();
@@ -150,6 +151,7 @@ public class AddFormActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private RequestBody createPartFromString(String description) {

@@ -9,22 +9,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
-import com.meyndita.absenguruprivatku.adapter.ItemGuru;
-import com.meyndita.absenguruprivatku.api.ApiClient;
-import com.meyndita.absenguruprivatku.api.ApiInterface;
-import com.meyndita.absenguruprivatku.helper.Session;
-import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.google.android.material.tabs.TabLayout;
+import com.meyndita.absenguruprivatku.ui.SectionsPagerAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import id.ac.polinema.absensiguruprivate.helper.Session;
+import id.ac.polinema.absensiguruprivate.ui.SectionsPagerAdapter;
 
 public class AdminActivity extends AppCompatActivity {
     private Session session;
@@ -37,56 +28,33 @@ public class AdminActivity extends AppCompatActivity {
 
         session = new Session(getApplicationContext());
 
-        final RecyclerView guruView = findViewById(R.id.rv_dataguru);
-        final ItemAdapter itemAdapter = new ItemAdapter<>();
-        final FastAdapter fastAdapter = FastAdapter.with(itemAdapter);
-
-        final List guru = new ArrayList<>();
-
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<ItemGuru>> call = apiInterface.getGuru();
-
-        call.enqueue(new Callback<List<ItemGuru>>() {
-            @Override
-            public void onResponse(Call<List<ItemGuru>> call, Response<List<ItemGuru>> response) {
-                if (response.isSuccessful()) {
-                    List<ItemGuru> guruItems = response.body();
-
-                    for (ItemGuru item : guruItems) {
-                        guru.add(new ItemGuru(item.getId_guru(), item.getNama(), item.getAlamat(), item.getJenis_kelamin(),
-                                item.getNo_telp(), item.getFoto(), item.getUsername(), item.getPassword()));
-                    }
-
-                    itemAdapter.add(guru);
-                    guruView.setAdapter(fastAdapter);
-
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                    guruView.setLayoutManager(layoutManager);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ItemGuru>> call, Throwable t) {
-                error.setText(t.getMessage());
-            }
-        });
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(sectionsPagerAdapter);
+        TabLayout tabs = findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
     }
 
-    public void myOnClick(View view) {
-        Intent intent = new Intent(getApplicationContext(), AddFormActivity.class);
+    public void myOnClickAddGuru(View view) {
+        Intent intent = new Intent(getApplicationContext(), FormGuruActivity.class);
+        startActivity(intent);
+    }
+
+    public void myOnClickAddSiswa(View view) {
+        Intent intent = new Intent(getApplicationContext(), FormSiswaActivity.class);
         startActivity(intent);
     }
 
     public void myOnClickLogout(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminActivity.this);
         builder.setCancelable(false);
-        builder.setMessage("Yakin Anda ingin logout?");
+        builder.setMessage("Apakah kamu ingin logout?");
         builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 session.logout();
-                Toast.makeText(getApplicationContext(), "Berhasil Logout!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), AdminLoginActivity.class);
+                Toast.makeText(getApplicationContext(), "Logout Berhasil", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), LoginAdminActivity.class);
                 startActivity(intent);
             }
         });

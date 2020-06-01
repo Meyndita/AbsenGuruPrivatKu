@@ -1,11 +1,14 @@
-package com.meyndita.absenguruprivatku.adapter;
+package com.meyndita.absenguruprivatku.model;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.meyndita.absenguruprivatku.DetailAbsenActivity;
 import com.meyndita.absenguruprivatku.R;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
@@ -13,7 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ItemGuru extends AbstractItem<ItemGuru, ItemGuru.ViewHolder> {
+public class GuruItem extends AbstractItem<GuruItem, GuruItem.ViewHolder> {
     private String id_guru;
     private String nama;
     private String alamat;
@@ -23,7 +26,7 @@ public class ItemGuru extends AbstractItem<ItemGuru, ItemGuru.ViewHolder> {
     private String username;
     private String password;
 
-    public ItemGuru(String id_guru, String nama, String alamat, String jenis_kelamin, String no_telp, String foto, String username, String password) {
+    public GuruItem(String id_guru, String nama, String alamat, String jenis_kelamin, String no_telp, String foto, String username, String password) {
         this.id_guru = id_guru;
         this.nama = nama;
         this.alamat = alamat;
@@ -68,13 +71,13 @@ public class ItemGuru extends AbstractItem<ItemGuru, ItemGuru.ViewHolder> {
 
     @NonNull
     @Override
-    public ItemGuru.ViewHolder getViewHolder(View v) {
+    public GuruItem.ViewHolder getViewHolder(View v) {
         return new ViewHolder(v);
     }
 
     @Override
     public int getType() {
-        return R.id.rv_dataguru;
+        return R.id.rv_guru;
     }
 
     @Override
@@ -82,7 +85,7 @@ public class ItemGuru extends AbstractItem<ItemGuru, ItemGuru.ViewHolder> {
         return R.layout.item_guru;
     }
 
-    public class ViewHolder extends FastAdapter.ViewHolder<ItemGuru> {
+    public class ViewHolder extends FastAdapter.ViewHolder<GuruItem> {
         ImageView profil;
         TextView id_guru, nama, alamat, jenis_kelamin, no_telp, username, password;
 
@@ -99,7 +102,7 @@ public class ItemGuru extends AbstractItem<ItemGuru, ItemGuru.ViewHolder> {
         }
 
         @Override
-        public void bindView(ItemGuru item, List<Object> payloads) {
+        public void bindView(final GuruItem item, List<Object> payloads) {
             Picasso.get().load(item.getFoto()).into(profil);
             id_guru.setText(item.id_guru);
             nama.setText(item.nama);
@@ -108,10 +111,20 @@ public class ItemGuru extends AbstractItem<ItemGuru, ItemGuru.ViewHolder> {
             no_telp.setText(item.no_telp);
             username.setText(item.username);
             password.setText(item.password);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context = itemView.getContext();
+                    Intent intent = new Intent(context, DetailAbsenActivity.class);
+                    intent.putExtra("username", item.username);
+                    context.startActivity(intent);
+                }
+            });
         }
 
         @Override
-        public void unbindView(ItemGuru item) {
+        public void unbindView(GuruItem item) {
             profil.setImageBitmap(null);
             id_guru.setText(null);
             nama.setText(null);

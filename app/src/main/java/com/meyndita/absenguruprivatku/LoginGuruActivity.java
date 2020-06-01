@@ -1,7 +1,6 @@
 package com.meyndita.absenguruprivatku;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,12 +11,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.meyndita.absenguruprivatku.api.ApiClient;
-import com.meyndita.absenguruprivatku.api.ApiInterface;
-import com.meyndita.absenguruprivatku.helper.Session;
 import com.meyndita.absenguruprivatku.model.User;
 
 import org.json.JSONArray;
@@ -28,12 +21,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import id.ac.polinema.absensiguruprivate.helper.Session;
+import id.ac.polinema.absensiguruprivate.rest.ApiClient;
+import id.ac.polinema.absensiguruprivate.rest.ApiInterface;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginGuruActivity extends AppCompatActivity {
     private EditText inputUsername, inputPassword;
     private TextView result;
     private Button loginButton;
@@ -43,14 +39,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login_guru);
 
         session = new Session(getApplicationContext());
-        inputUsername = findViewById(R.id.edt_username);
-        inputPassword = findViewById(R.id.edt_password);
+        inputUsername = findViewById(R.id.edt_username_guru);
+        inputPassword = findViewById(R.id.edt_password_guru);
         result = findViewById(R.id.txt_login_admin);
         loginButton = findViewById(R.id.btn_login_guru);
-        loginForm = findViewById(R.id.guru_login);
+        loginForm = findViewById(R.id.login_guru);
 
         loginButton = findViewById(R.id.btn_login_guru);
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +55,16 @@ public class MainActivity extends AppCompatActivity {
                 userLogin(inputUsername.getText().toString(), inputPassword.getText().toString());
             }
         });
+
+        if (session.getLoggedInstatus()) {
+            if (session.getLoggedInRole().equals("admin")) {
+                Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                startActivity(intent);
+            } else if (session.getLoggedInRole().equals("guru")) {
+                Intent intent = new Intent(getApplicationContext(), GuruActivity.class);
+                startActivity(intent);
+            }
+        }
     }
 
     private void userLogin(String username, String password) {
@@ -76,18 +82,9 @@ public class MainActivity extends AppCompatActivity {
                         String password = json.getJSONObject(0).getString("password");
                         String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
                         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-                        FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
-                        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(MainActivity.this, new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location) {
-                                if (location != null) {
-                                    session.setLocLatitude(location.getLatitude());
-                                    session.setLocLongitude(location.getLongitude());
-                                }
-                            }
-                        });
 
                         session.setLoggedInStatus(true);
+                        session.setLoggedInRole("guru");
                         session.setUsername(username);
                         session.setPassword(password);
                         session.setLoginTime(currentTime);
@@ -101,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Credentials are not valid!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Credentials are not Valid.", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -114,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void switchLoginAdmin(View view) {
-        Intent intent = new Intent(MainActivity.this, AdminLoginActivity.class);
+        Intent intent = new Intent(LoginGuruActivity.this, LoginAdminActivity.class);
         startActivity(intent);
     }
 }

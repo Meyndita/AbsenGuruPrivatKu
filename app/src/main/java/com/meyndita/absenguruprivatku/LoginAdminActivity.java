@@ -11,9 +11,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.meyndita.absenguruprivatku.api.ApiClient;
-import com.meyndita.absenguruprivatku.api.ApiInterface;
-import com.meyndita.absenguruprivatku.helper.Session;
 import com.meyndita.absenguruprivatku.model.User;
 
 import org.json.JSONArray;
@@ -21,13 +18,15 @@ import org.json.JSONException;
 
 import java.io.IOException;
 
+import id.ac.polinema.absensiguruprivate.helper.Session;
+import id.ac.polinema.absensiguruprivate.rest.ApiClient;
+import id.ac.polinema.absensiguruprivate.rest.ApiInterface;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AdminLoginActivity extends AppCompatActivity {
-
+public class LoginAdminActivity extends AppCompatActivity {
     private EditText inputUsername, inputPassword;
     private TextView result;
     private Button loginButton;
@@ -37,16 +36,15 @@ public class AdminLoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_login);
+        setContentView(R.layout.activity_login_admin);
 
         session = new Session(getApplicationContext());
         inputUsername = findViewById(R.id.edt_username_admin);
         inputPassword = findViewById(R.id.edt_password_admin);
         result = findViewById(R.id.txt_login_guru);
         loginButton = findViewById(R.id.btn_login_admin);
-        loginForm = findViewById(R.id.admin_login);
+        loginForm = findViewById(R.id.login_admin);
 
-        loginButton = findViewById(R.id.btn_login_admin);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,12 +68,12 @@ public class AdminLoginActivity extends AppCompatActivity {
                         String password = json.getJSONObject(0).getString("password");
 
                         session.setLoggedInStatus(true);
+                        session.setLoggedInRole("admin");
                         session.setUsername(username);
                         session.setPassword(password);
 
                         Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
                         startActivity(intent);
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -94,7 +92,7 @@ public class AdminLoginActivity extends AppCompatActivity {
     }
 
     public void switchLoginGuru(View view) {
-        Intent intent = new Intent(AdminLoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(LoginAdminActivity.this, LoginGuruActivity.class);
         startActivity(intent);
     }
 }

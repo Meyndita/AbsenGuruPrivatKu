@@ -1,4 +1,4 @@
-package com.meyndita.absenguruprivatku.adapter;
+package com.meyndita.absenguruprivatku.model;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 
 import java.util.List;
 
-public class ItemAbsensi extends AbstractItem<ItemAbsensi, ItemAbsensi.ViewHolder> {
+public class AbsenItem extends AbstractItem<AbsenItem, AbsenItem.ViewHolder> {
     private String username;
     private String password;
     private String jam_login;
@@ -22,8 +22,11 @@ public class ItemAbsensi extends AbstractItem<ItemAbsensi, ItemAbsensi.ViewHolde
     private String tanggal;
     private double lokasi_latitude;
     private double lokasi_longitude;
+    private String nim_siswa;
+    private String nama;
+    private String alamat;
 
-    public ItemAbsensi(String username, String password, String jam_login, String jam_logout, String tanggal, double lokasi_latitude, double lokasi_longitude) {
+    public AbsenItem(String username, String password, String jam_login, String jam_logout, String tanggal, double lokasi_latitude, double lokasi_longitude, String nim_siswa, String nama, String alamat) {
         this.username = username;
         this.password = password;
         this.jam_login = jam_login;
@@ -31,6 +34,9 @@ public class ItemAbsensi extends AbstractItem<ItemAbsensi, ItemAbsensi.ViewHolde
         this.tanggal = tanggal;
         this.lokasi_latitude = lokasi_latitude;
         this.lokasi_longitude = lokasi_longitude;
+        this.nim_siswa = nim_siswa;
+        this.nama = nama;
+        this.alamat = alamat;
     }
 
     public String getUsername() {
@@ -61,42 +67,54 @@ public class ItemAbsensi extends AbstractItem<ItemAbsensi, ItemAbsensi.ViewHolde
         return lokasi_longitude;
     }
 
+    public String getNim_siswa() {
+        return nim_siswa;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
     @NonNull
     @Override
-    public ItemAbsensi.ViewHolder getViewHolder(View v) {
+    public AbsenItem.ViewHolder getViewHolder(View v) {
         return new ViewHolder(v);
     }
 
     @Override
     public int getType() {
-        return R.id.rv_dataabsen;
+        return R.id.rv_absen;
     }
 
     @Override
     public int getLayoutRes() {
-
         return R.layout.item_absen;
     }
 
-    public class ViewHolder extends FastAdapter.ViewHolder<ItemAbsensi> {
-        private TextView jam_login, jam_logout, tanggal, latitude, longitude;
+
+    public class ViewHolder extends FastAdapter.ViewHolder<AbsenItem> {
+        private TextView jam_login, jam_logout, tanggal, nama, alamat;
 
         public ViewHolder(View itemView) {
             super(itemView);
             jam_login = itemView.findViewById(R.id.txt_jam_login);
             jam_logout = itemView.findViewById(R.id.txt_jam_logout);
             tanggal = itemView.findViewById(R.id.txt_tanggal);
-            latitude = itemView.findViewById(R.id.txt_lokasi_latitude);
-            longitude = itemView.findViewById(R.id.txt_lokasi_longitude);
+            nama = itemView.findViewById(R.id.txt_siswa_diajar);
+            alamat = itemView.findViewById(R.id.txt_alamat_siswa);
         }
 
         @Override
-        public void bindView(final ItemAbsensi item, List<Object> payloads) {
+        public void bindView(final AbsenItem item, List<Object> payloads) {
             jam_login.setText(item.jam_login);
             jam_logout.setText(item.jam_logout);
             tanggal.setText(item.tanggal);
-            latitude.setText(String.valueOf(item.lokasi_latitude));
-            longitude.setText(String.valueOf(item.lokasi_longitude));
+            nama.setText(item.nama);
+            alamat.setText(item.alamat);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -108,15 +126,16 @@ public class ItemAbsensi extends AbstractItem<ItemAbsensi, ItemAbsensi.ViewHolde
                     context.startActivity(intent);
                 }
             });
+
         }
 
         @Override
-        public void unbindView(ItemAbsensi item) {
+        public void unbindView(AbsenItem item) {
             jam_login.setText(null);
             jam_logout.setText(null);
             tanggal.setText(null);
-            latitude.setText(null);
-            longitude.setText(null);
+            nama.setText(null);
+            alamat.setText(null);
         }
     }
 }

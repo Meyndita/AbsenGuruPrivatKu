@@ -1,7 +1,8 @@
 package com.meyndita.absenguruprivatku.api;
 
-import com.meyndita.absenguruprivatku.adapter.ItemAbsensi;
-import com.meyndita.absenguruprivatku.adapter.ItemGuru;
+import com.meyndita.absenguruprivatku.model.AbsenItem;
+import com.meyndita.absenguruprivatku.model.GuruItem;
+import com.meyndita.absenguruprivatku.model.SiswaItem;
 import com.meyndita.absenguruprivatku.model.User;
 
 import java.util.List;
@@ -20,30 +21,36 @@ import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
-    @POST("LoginAdmin")
+    @POST("loginAdmin")
     Call<ResponseBody> loginAdmin(@Body User user);
 
-    @POST("LoginGuru")
+    @POST("loginGuru")
     Call<ResponseBody> loginGuru(@Body User user);
 
-    @GET("Guru")
-    Call<List<ItemGuru>> getGuru();
+    @GET("dataGuru")
+    Call<List<GuruItem>> getGuru();
 
-    @GET("Guru")
-    Call<List<ItemGuru>> getGuruByUsername(
+    @GET("dataGuru")
+    Call<List<GuruItem>> getGuruByUsername(
             @Query("username") String username
     );
 
-    @GET("AbsenGuru")
-    Call<List<ItemAbsensi>> getAbsenByUsername(
+    @GET("dataSiswa")
+    Call<List<SiswaItem>> getSiswa();
+
+    @POST("dataSiswa")
+    Call<ResponseBody> tambahSiswa(@Body SiswaItem siswa);
+
+    @GET("absenGuru")
+    Call<List<AbsenItem>> getAbsenByUsername(
             @Query("username") String username
     );
 
-    @POST("AbsenGuru")
-    Call<ResponseBody> absenGuru(@Body ItemAbsensi absen);
+    @POST("absenGuru")
+    Call<ResponseBody> absenGuru(@Body AbsenItem absen);
 
     @Multipart
-    @POST("Guru")
+    @POST("dataGuru")
     Call<ResponseBody> tambahGuru(
             @Part MultipartBody.Part photo,
             @PartMap Map<String, RequestBody> text);
